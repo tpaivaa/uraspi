@@ -6,6 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+  "type": "git",
+  "url": "git@github.com:tpaivaa/uraspi.git"
+  },
   "author": "tpaivaa <tpaivaa@gmail.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.13.2",
+    "express": "^4.13.1"
+  }
 }
