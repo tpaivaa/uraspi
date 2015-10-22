@@ -1,10 +1,11 @@
 "use strict";
 
-var jsonfile = require('jsonfile'),
-	file = './lights.config',
-	lights = jsonfile.readFileSync(file);
 
 function Switchery(name) {
+
+	var jsonfile = require('jsonfile'),
+	file = './lights.config',
+	lights = jsonfile.readFileSync(file);
 
 	this.name = name;
 	this.status = lights[name].status;
