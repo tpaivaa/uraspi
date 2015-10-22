@@ -6,7 +6,12 @@ var Gpio = require('onoff').Gpio,
   btn1led1 = new Gpio(17, 'out'),
   btn1led2 = new Gpio(18, 'out'),
   btn1led3 = new Gpio(27, 'out'),
-  btn1led4 = new Gpio(22, 'out');
+  btn1led4 = new Gpio(22, 'out'),
+  sw = require('./switchery'),
+  aulasw = new sw('aula'),
+  ulkosw = new sw('ulko'),
+  ykMHsw = new sw('ykMH'),
+  verantasw = new sw('veranta');
 
 function exit() {
   button1.unexport();
@@ -20,14 +25,16 @@ function exit() {
   process.exit();
 }
 
-console.log(process.env);
 
 button1.watch(function(err, value) {
   if (err) {
     throw err;
   }
   console.log('Button1 pushed');
-  
+  verantasw.changeStatus();
+  console.log(verantasw.status);
+  btn1led1.writeSync(verantasw.status);
+
 });
 
 button2.watch(function(err, value) {
