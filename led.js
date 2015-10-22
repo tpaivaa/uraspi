@@ -33,7 +33,8 @@ button1.watch(function(err, value) {
   console.log('Button1 pushed');
   verantasw.changeStatus();
   console.log(verantasw.status);
-  btn1led1.writeSync(verantasw.status);
+  console.log(verantasw.gpiostatus);
+  btn1led1.writeSync(verantasw.gpiostatus);
 
 });
 
