@@ -8,10 +8,10 @@ var Gpio = require('onoff').Gpio,
   btn1led3 = new Gpio(27, 'out'),
   btn1led4 = new Gpio(22, 'out'),
   sw = require('./switchery'),
-  aulasw = new sw('aula'),
-  ulkosw = new sw('ulko'),
-  ykMHsw = new sw('ykMH'),
-  verantasw = new sw('veranta');
+  aulasw = new sw.Switchery('aula'),
+  ulkosw = new sw.Switchery('ulko'),
+  ykMHsw = new sw.Switchery('ykMH'),
+  verantasw = new sw.Switchery('veranta');
 
 function exit() {
   button1.unexport();
