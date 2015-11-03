@@ -35,14 +35,20 @@ function exit() {
 function mylight(err, state) {
 	console.log('Button1 pushed');
 	console.log(verantasw.status);
-	if (verantasw.status == 1) {
-	btn1led1.writeSync(0);
-	verantasw.changeStatus();
-	} else {
-		btn1led1.writeSync(1);
-		verantasw.changeStatus();
-
-	}
+	
+	setTimeout(function () {
+		if (button1.readSync() != 1) {
+			if (verantasw.status == 1) {
+			btn1led1.writeSync(0);
+			verantasw.changeStatus();
+			} else {
+				btn1led1.writeSync(1);
+				verantasw.changeStatus();
+		
+			}
+		}
+			
+		}, 100)
 }
 
 
