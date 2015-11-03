@@ -46,7 +46,7 @@ function mylight(err, state) {
 				verantasw.changeStatus();
 		
 			}
-		}
+		}else {return}
 			
 		}, 100)
 }
