@@ -53,7 +53,6 @@ button2.watch(function(err, value) {
     throw err;
   }
   console.log('Button2 pushed');
-  testled1.writeSync(1);  
 });
 
 button3.watch(function(err, value) {
