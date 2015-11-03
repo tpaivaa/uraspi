@@ -52,21 +52,31 @@ function mylight(err, state) {
 }
 
 
-button1.watch(mylight);
+//button1.watch(mylight);
 
 button2.watch(function(err, value) {
   if (err) {
     throw err;
   }
   console.log('Button2 pushed');
+    	if (verantasw.status == 1) {
+	btn1led2.writeSync(0);
+	verantasw.changeStatus();
+	} else {
+		btn1led2.writeSync(1);
+		verantasw.changeStatus();
+
+	}
 });
 
-button3.watch(function(err, value) {
+/*
+ button3.watch(function(err, value) {
   if (err) {
     throw err;
   }
   console.log('Button3 pushed');
 });
+*/
 
 button4.watch(function(err, value) {
   if (err) {
