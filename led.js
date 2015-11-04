@@ -39,8 +39,8 @@ function mylight(err, state) {
 	setTimeout(function () {
 		if (button1.readSync() != 1) {
 			if (verantasw.status == 1) {
-			btn1led1.writeSync(0);
-			verantasw.changeStatus();
+				btn1led1.writeSync(0);
+				verantasw.changeStatus();
 			} else {
 				btn1led1.writeSync(1);
 				verantasw.changeStatus();
@@ -60,8 +60,8 @@ button2.watch(function(err, value) {
   }
   console.log('Button2 pushed');
     	if (verantasw.status == 1) {
-	btn1led2.writeSync(0);
-	verantasw.changeStatus();
+		btn1led2.writeSync(0);
+		verantasw.changeStatus();
 	} else {
 		btn1led2.writeSync(1);
 		verantasw.changeStatus();
@@ -84,9 +84,9 @@ button4.watch(function(err, value) {
   }
   console.log('button4 pushed');
   	if (ulkosw.status == 1) {
-	btn1led4.writeSync(0);
-	ulkoValoRele.writeSync(0);
-	ulkosw.changeStatus();
+		btn1led4.writeSync(0);
+		ulkoValoRele.writeSync(0);
+		ulkosw.changeStatus();
 	} else {
 		btn1led4.writeSync(1);
 		ulkoValoRele.writeSync(1);
