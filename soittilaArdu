@@ -12,6 +12,7 @@
  * 10K resistor attached from pin 2 to ground
  */
 
+
 // constants won't change. They're used here to
 // set pin numbers:
 const int verantaSwitch1 = 2;   // Verannan kytkin 1 input
@@ -22,6 +23,9 @@ const int verantaLight = 10;    // Verannan valo ja kytkimen1 led output
 const int out2 = 11;            //  valo ja kytkimen2 led output
 const int out3 = 12;            //  valo ja kytkimen3 led output
 const int ulkoLight = 13;       // Ulkovalo ja kytkimen4 led output
+
+String inputString = "";         // a string to hold incoming data
+boolean stringComplete = false;  // whether the string is complete
 
 // Variables will change:
 int verantaLightState = HIGH; // the current state of the veranta light
@@ -46,11 +50,24 @@ long lastDebounceTime1 = 0;  // the last time the output pin was toggled
 long lastDebounceTime2 = 0;
 long lastDebounceTime3 = 0;
 long lastDebounceTime4 = 0;
-long debounceDelay = 75;    // the debounce time; increase if the output flickers
+long debounceDelay = 100;    // the debounce time; increase if the output flickers
+
 
 void setup() {
   // initialize serial:
   Serial.begin(9600);
+  Serial.println("Serial Init");
+  // Flush switch states to serial connection
+  Serial.print("sw1:");
+  Serial.println(verantaLightState, DEC);
+  Serial.print("sw2:");
+  Serial.println(light2State, DEC);
+  Serial.print("sw3:");
+  Serial.println(light3State, DEC);
+  Serial.print("sw4:");
+  Serial.println(ulkoLightState, DEC);
+  
+  inputString.reserve(200);
   // initialize pin inputs and outputs
   pinMode(verantaSwitch1, INPUT);
   pinMode(verantaSwitch2, INPUT);
@@ -75,7 +92,8 @@ void loop() {
   int sw1reading = digitalRead(verantaSwitch1);
   int sw2reading = digitalRead(verantaSwitch2);
   int sw3reading = digitalRead(verantaSwitch3);
-  int sw4reading = digitalRead(verantaSwitch4);    
+  int sw4reading = digitalRead(verantaSwitch4);
+
 
   // check to see if the button is just pressed 
   // (i.e. the input went from LOW to HIGH),  and you've waited
@@ -89,16 +107,16 @@ void loop() {
     // If the switch changed, due to noise or pressing:
   if (sw2reading != lastSwitch2State) {
     // reset the debouncing timer
-    lastDebounceTime1 = millis();
+    lastDebounceTime2 = millis();
   }
     // If the switch changed, due to noise or pressing:
   if (sw3reading != lastSwitch3State) {
     // reset the debouncing timer
-    lastDebounceTime1 = millis();
+    lastDebounceTime3 = millis();
   }
     if (sw4reading != lastSwitch4State) {
     // reset the debouncing timer
-    lastDebounceTime2 = millis();
+    lastDebounceTime4 = millis();
   }
 
   if ((millis() - lastDebounceTime1) > debounceDelay) {
@@ -112,7 +130,8 @@ void loop() {
       // only toggle the out if the new button state is HIGH
       if (switch1State == HIGH) {
         verantaLightState = !verantaLightState;
-        //Serial.println("Veranta: " + verantaLightState);
+        Serial.print("sw1:");
+        Serial.println(verantaLightState, DEC);
       }
     }
   }
@@ -128,7 +147,8 @@ void loop() {
       // only toggle the out if the new button state is HIGH
       if (switch2State == HIGH) {
         light2State = !light2State;
-        //Serial.println("Light2: " + light2State);
+        Serial.print("sw2:");
+        Serial.println(light2State,DEC);
       }
     }
   }
@@ -144,7 +164,8 @@ void loop() {
       // only toggle the out if the new button state is HIGH
       if (switch3State == HIGH) {
         light3State = !light3State;
-        //Serial.println("Light3: " + light3State);
+        Serial.print("sw3:");
+        Serial.println(light3State, DEC);
       }
     }
   }
@@ -160,10 +181,24 @@ void loop() {
       // only toggle the out if the new button state is HIGH
       if (switch4State == HIGH) {
         ulkoLightState = !ulkoLightState;
-        //Serial.println("Ulkovalo: " + ulkoLightState);
+        Serial.print("sw4:");
+        Serial.println(ulkoLightState, DEC);
       }
     }
   }  
+
+  
+  if (stringComplete) {
+    Serial.print(inputString);
+    if (inputString == "out;") {
+      ulkoLightState = !ulkoLightState;
+      Serial.print("sw4:");
+      Serial.println(ulkoLightState, DEC);
+    }
+    inputString = "";
+    stringComplete = false;
+  }
+
   // set the LED:
 
   digitalWrite(verantaLight, verantaLightState);  
@@ -177,4 +212,19 @@ void loop() {
   lastSwitch2State = sw2reading;
   lastSwitch3State = sw3reading;
   lastSwitch4State = sw4reading;
+  
+}
+
+void serialEvent() {
+  while (Serial.available()) {
+    // get the new byte:
+    char inChar = (char)Serial.read(); 
+    // add it to the inputString:
+    inputString += inChar;
+    // if the incoming character is a newline, set a flag
+    // so the main loop can do something about it:
+    if (inChar == ';') {
+      stringComplete = true;
+    } 
+  }
 }
