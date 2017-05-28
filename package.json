@@ -13,9 +13,12 @@
   "author": "tpaivaa <tpaivaa@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "azure-storage": "^2.1.0",
     "body-parser": "^1.13.2",
     "express": "^4.13.1",
     "jsonfile": "^2.2.2",
+    "mqtt": "^2.7.2",
+    "nconf": "^0.8.4",
     "onoff": "^1.0.2"
   }
 }
